@@ -119,25 +119,37 @@ var game = {
   },
   makeComputerChoice() {
   	// Plan A: check to see if winning is one move away for you
-  	var winningSpace = this.checkIfNearlyWon('O');
+  	var winningSpace = this.winningMove('O');
 
   	// if winningSpace == null, move on to plan B
+    if (winningSpace == null) {
+      // plan B
+      winningSpace = this.winningMove('X');
 
-  	// else if so, choose the remaining space to win
+      // if winningSpace == null, move on to plan C
+      if (winningSpace == null) {
+        // plan C
+        nextSpace = this.nextMove('O');
 
-  	// Plan B: if the other player is about to win, choose the space they need
-  	winningSpace = this.checkIfNearlyWon('X');
+        if (nextSpace == null) {
+          // plan D
 
-  	// if winningSpace == null, move on to plan C
+          alert('We need a plan D!!!');
+        } else {
+          controller.placeMark(nextSpace[0], nextSpace[1], 'O');
+        }
+      } else {
+        // place a mark to block the human player
+        controller.placeMark(winningSpace[0], winningSpace[1], 'O');
+      }
 
-  	// else if so, choose the space to block the other player
-
-  	// Plan C: choose a random available space
-
-  	console.log(winningSpace)
+    } else {
+      // computer makes the winning move
+      controller.placeMark(winningSpace[0], winningSpace[1], 'O');
+    }
   },
-  checkIfNearlyWon(mark) {
-  	var almostWinner = false;
+  winningMove(mark) {
+    var winningCoordinate = [];
 
     for (var i=0; i<this.winningCombinations.length; i++) {
     	// for each combination (there are 8)
@@ -160,10 +172,11 @@ var game = {
     	// check if there is two in a row
     	if (matches == 2) {
     		// ensure that there is an empty space available to win
-        var isEmptySpace = combination.includes('_');
+        var emptySpace = combination.indexOf('_');
 
-        if (isEmptySpace) {
-          almostWinner = true;
+        if (emptySpace !== -1) {
+          // set the winning coordinate
+          winningCoordinate = combination[emptySpace];
           break;
         } else {
           matches = 0;
@@ -173,7 +186,61 @@ var game = {
     	}
     }
 
-  	return almostWinner;
+    if (winningCoordinate == []) {
+      return null;
+    } else {
+      return winningCoordinate;
+    }
+  },
+  nextMove(mark) {
+    var nextCoordinate = [];
+
+    for (var i=0; i<this.winningCombinations.length; i++) {
+      // for each combination (there are 8)
+      var combination = this.winningCombinations[i];
+
+      // check for a match
+      var matches = 0;
+
+      // for each coordinate (there are 3)
+      for (var j=0; j<combination.length; j++ ) {
+        var coordinate = combination[j];
+        var row = coordinate[0];
+        var column = coordinate[1];
+
+        if (this.board[row][column] == mark) {
+          matches++;
+        }
+      }
+
+      // check if there is one starting a winning cominbation
+      if (matches == 1) {
+        // ensure that there are two empty spaces available to win
+        var emptySpaces = [];
+
+        for (var k=0; k<combination.length; k++) {
+          if (this.board[combination[0]][combination[1]] == '_') {
+            emptySpaces.push(combination[k])
+          }
+        }
+
+        if (emptySpaces.length == 2) {
+          // set the winning coordinate
+          nextCoordinate = emptySpaces[0];
+          break;
+        } else {
+          matches = 0;
+        }
+      } else {
+        matches = 0;
+      }
+    }
+
+    if (nextCoordinate == []) {
+      return null;
+    } else {
+      return nextCoordinate;
+    }
   }
 };
 
