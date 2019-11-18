@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TICTACTOE.ORG</title>
+	<link href="https://fonts.googleapis.com/css?family=Chilanka&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="mtictactoe.css">
+</head>
+<body>
+	<header>
+		<h1>Tic Tac Toe</h1>
+		<h2>By Malachi McCleary and Thaddeus McCleary</h2>
+	</header>
+	<main>
+	<table>
+		<tr>
+			<td id="00"><button onclick="controller.placeMark(0, 0, game.player)" class="tic-tac-operative">X</button></td>
+			<td id="01" class="vert"><button onclick="controller.placeMark(0, 1, game.player)" class="tic-tac-operative">X</button></td>
+			<td id="02"><button onclick="controller.placeMark(0, 2, game.player)" class="tic-tac-operative">X</button></td>
+		</tr>
+		<tr>
+			<td id="10" class="hori"><button onclick="controller.placeMark(1, 0, game.player)" class="tic-tac-operative">X</button></td>
+			<td id="11" class="vert hori"><button onclick="controller.placeMark(1, 1, game.player)" class="tic-tac-operative">X</button></td>
+			<td id="12"class="hori"><button onclick="controller.placeMark(1, 2, game.player)" class="tic-tac-operative">X</button></td>
+		</tr>
+		<tr>
+			<td id="20"><button onclick="controller.placeMark(2, 0, game.player)" class="tic-tac-operative">X</button></td>
+			<td id="21" class="vert"><button onclick="controller.placeMark(2, 1, game.player)" class="tic-tac-operative">X</button></td>
+			<td id="22"><button onclick="controller.placeMark(2, 2, game.player)" class="tic-tac-operative">X</button></td>
+		</tr>
+	</table>
+</main>
+	<footer>
+		<button class="gamepad" onclick="controller.reload()">
+			<span class="fa fa-gamepad fa-2x"></span>
+		</button>
+		<h3 id="stats"></h3>
+	</footer>
+	<script src="https://use.fontawesome.com/bc517d47ac.js"></script>
+	<script type="text/javascript" src="mtictactoe.js"></script>
+</body>
+</html>
