@@ -121,6 +121,7 @@ var game = {
   	// Plan A: check to see if winning is one move away for you
   	var winningSpace = this.winningMove('O');
 
+    console.log(winningSpace == null)
   	// if winningSpace == null, move on to plan B
     if (winningSpace == null) {
       // plan B
@@ -132,9 +133,7 @@ var game = {
         nextSpace = this.nextMove('O');
 
         if (nextSpace == null) {
-          // plan D
-
-          alert('We need a plan D!!!');
+          this.chooseRandomSpace('O');
         } else {
           controller.placeMark(nextSpace[0], nextSpace[1], 'O');
         }
@@ -144,6 +143,7 @@ var game = {
       }
 
     } else {
+      console.log('Computer can win!');
       // computer makes the winning move
       controller.placeMark(winningSpace[0], winningSpace[1], 'O');
     }
@@ -186,7 +186,9 @@ var game = {
     	}
     }
 
-    if (winningCoordinate == []) {
+    console.log(winningCoordinate);
+
+    if (winningCoordinate.length == 0) {
       return null;
     } else {
       return winningCoordinate;
@@ -219,7 +221,10 @@ var game = {
         var emptySpaces = [];
 
         for (var k=0; k<combination.length; k++) {
-          if (this.board[combination[0]][combination[1]] == '_') {
+          var combinationRow = combination[k][0];
+          var combinationColumn = combination[k][1];
+
+          if (this.board[combinationRow][combinationColumn] == '_') {
             emptySpaces.push(combination[k])
           }
         }
@@ -236,11 +241,34 @@ var game = {
       }
     }
 
-    if (nextCoordinate == []) {
+    console.log(nextCoordinate);
+
+    if (nextCoordinate.length == 0) {
       return null;
     } else {
       return nextCoordinate;
     }
+  },
+  chooseRandomSpace(mark) {
+    var coordinatesAvailable = [];
+    for (var i=0; i<this.board.length; i++) {
+      var row = this.board[i];
+
+      for (var j=0; j<row.length; j++) {
+        var coordinate = row[j];
+
+        if (coordinate == '_') {
+          coordinatesAvailable.push([i, j]);
+        }
+      }
+    }
+
+    console.log(coordinatesAvailable);
+    var randomIndex = Math.floor(Math.random() * coordinatesAvailable.length);
+
+    var choice = coordinatesAvailable[randomIndex];
+
+    controller.placeMark(choice[0], choice[1], mark);
   }
 };
 
@@ -298,8 +326,6 @@ var view = {
   		}
 
   	}
-
-  	console.log(gameBoard);
   },
   disableButtons: function() {
     var gameButtons = document.getElementsByClassName('tic-tac-operative');
