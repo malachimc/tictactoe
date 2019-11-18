@@ -137,35 +137,41 @@ var game = {
   	console.log(winningSpace)
   },
   checkIfNearlyWon(mark) {
-  		var almostWinner = false;
+  	var almostWinner = false;
 
-  	for (var i=0; i<this.winningCombinations.length; i++) {
-  		// for each combination (there are 8)
-  		var combination = this.winningCombinations[i];
+    for (var i=0; i<this.winningCombinations.length; i++) {
+    	// for each combination (there are 8)
+    	var combination = this.winningCombinations[i];
 
-  		// check for 2 matches
-  		var matches = 0;
+    	// check for 2 matches
+    	var matches = 0;
 
-  		// for each coordinate (there are 3)
-  		for (var j=0; j<combination.length; j++ ) {
-  			var coordinate = combination[j];
-  			var row = coordinate[0];
-  			var column = coordinate[1];
+    	// for each coordinate (there are 3)
+    	for (var j=0; j<combination.length; j++ ) {
+    		var coordinate = combination[j];
+    		var row = coordinate[0];
+    		var column = coordinate[1];
 
-  			if (this.board[row][column] == mark) {
-  				matches++;
-  			}
-  		}
+    		if (this.board[row][column] == mark) {
+    			matches++;
+    		}
+    	}
 
-  		// check if there is two in a row
-  		if (matches == 2) {
-  			almostWinner = true;
-  			break;
-  		} else {
-  			matches = 0;
-  		}
+    	// check if there is two in a row
+    	if (matches == 2) {
+    		// ensure that there is an empty space available to win
+        var isEmptySpace = combination.includes('_');
 
-  	}
+        if (isEmptySpace) {
+          almostWinner = true;
+          break;
+        } else {
+          matches = 0;
+        }
+    	} else {
+    		matches = 0;
+    	}
+    }
 
   	return almostWinner;
   }
