@@ -332,7 +332,7 @@ var view = {
     }
   },
   enableButtons: function() {
-	var gameButtons = document.getElementsByClassName('tic-tac-operative');
+    var gameButtons = document.getElementsByClassName('tic-tac-operative');
     
     // loop through buttons
     for (var i=0; i<gameButtons.length; i++) {
@@ -342,6 +342,3 @@ var view = {
     }
   }
 };
-
-// showBoard();
-// play();
