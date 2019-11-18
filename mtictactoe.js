@@ -93,15 +93,12 @@ var game = {
 
   	if (this.winnerExists('X')) {
   		check = true;
-  		console.log('X is the winner!');
   		document.getElementById('stats').innerHTML = 'X is the winner!';
   	} else if (this.winnerExists('O')) {
   		check = true;
-  		console.log('O is the winner!');
   		document.getElementById('stats').innerHTML = 'O is the winner!';
   	} else if (this.isATie()) {
   		check = true;
-  		console.log('Tie!')
   		document.getElementById('stats').innerHTML = 'Tie!';
   	}
 
@@ -114,7 +111,6 @@ var game = {
   		this.player = 'X';
   	}
 
-  	console.log(this.player);
     return this.player;
   },
   makeComputerChoice() {
@@ -126,25 +122,26 @@ var game = {
     if (winningSpace == null) {
       // plan B
       winningSpace = this.winningMove('X');
-
-      // if winningSpace == null, move on to plan C
       if (winningSpace == null) {
-        // plan C
         nextSpace = this.nextMove('O');
 
         if (nextSpace == null) {
+          console.log('Using strategy D');
           this.chooseRandomSpace('O');
         } else {
+          // plan C
+          console.log('Using strategy C');
           controller.placeMark(nextSpace[0], nextSpace[1], 'O');
         }
       } else {
         // place a mark to block the human player
+        console.log('Using strategy B');
         controller.placeMark(winningSpace[0], winningSpace[1], 'O');
       }
 
     } else {
-      console.log('Computer can win!');
       // computer makes the winning move
+      console.log('Using strategy A');
       controller.placeMark(winningSpace[0], winningSpace[1], 'O');
     }
   },
@@ -157,6 +154,8 @@ var game = {
 
     	// check for 2 matches
     	var matches = 0;
+      var spaces = 0;
+      var possibleMove = [];
 
     	// for each coordinate (there are 3)
     	for (var j=0; j<combination.length; j++ ) {
@@ -166,27 +165,24 @@ var game = {
 
     		if (this.board[row][column] == mark) {
     			matches++;
-    		}
+    		} else if (this.board[row][column] == '_') {
+          spaces++;
+          possibleMove = coordinate;
+        }
     	}
 
-    	// check if there is two in a row
-    	if (matches == 2) {
-    		// ensure that there is an empty space available to win
-        var emptySpace = combination.indexOf('_');
-
-        if (emptySpace !== -1) {
-          // set the winning coordinate
-          winningCoordinate = combination[emptySpace];
+    	// check if there is two in a row and a free space
+    	if (matches == 2 && spaces == 1) {
+    		  winningCoordinate = possibleMove;
           break;
-        } else {
-          matches = 0;
-        }
     	} else {
     		matches = 0;
+        spaces = 0;
+        possibleMove = [];
     	}
     }
 
-    console.log(winningCoordinate);
+    console.log('The winning coordinate is:', winningCoordinate);
 
     if (winningCoordinate.length == 0) {
       return null;
@@ -240,8 +236,6 @@ var game = {
         matches = 0;
       }
     }
-
-    console.log(nextCoordinate);
 
     if (nextCoordinate.length == 0) {
       return null;

@@ -44,7 +44,7 @@ body {
 		height: 80px;
 		background-color: gray;
 		border-radius: 100%;
-		line-height: 82.5px;
+		font-size: 2em;
 }
 
 .vert {
